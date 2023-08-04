@@ -1,0 +1,274 @@
+---
+title: "SPARC quick start vignette"
+output: 
+rmarkdown::html_vignette: 
+toc: true
+fig_width: 7 
+fig_height: 8 
+vignette: >
+  %\VignetteIndexEntry{Straightforward SPARC run}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<style>
+p.caption {
+  font-size: 1.5em;
+}
+</style>
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Installation
+```{r installation, eval=FALSE}
+
+#devtools::install_github("https://github.com/Nanostring-Biostats/SPARC")
+# setwd() in Rstudio to the SPARC directory
+# run devtools::install()
+
+```   
+
+### Overview
+
+The SPARC algorithm identifies modules of "spatially co-expressed" genes - i.e.
+genes that tend to be expressed in the same tissue regions as each other. 
+These modules should reveal interesting patterns in the data deserving deeper exploration.
+
+Once spatially co-expressed modules have been detected, SPARC provides a number 
+of tools to help explore and interpret them.
+
+SPARC attempts to weed out "uninteresting" or trivial spatial correlations, for example
+those driven by cell type distribution. (E.g. if plasmablasts are spatially clustered, 
+we aren't interested in learning that IgG genes are spatially correlated, unless that correlation
+goes beyond what the spatial distribution of plasmablasts can explain.)
+
+This vignette demonstrates the use of the SPARC algorithm to find groups of spatially co-expressed genes in [CosMx](https://www.nature.com/articles/s41587-022-01483-z) data. CosMx is a spatial molecular imager for sub-cellular resolution of mRNA transcripts and protein targets. We analyze a subset of a lupus nephritis experiment. 
+
+### Preliminaries
+First, we load the package and access the example data:
+```{r setup}
+set.seed(0)
+
+library(SPARC)
+data(cosmx_kidney)
+str(cosmx_kidney)
+```
+
+### Necessary inputs
+First, let us look at the data we need. 
+
+1. A matrix of counts data, cells x genes:
+```{r strcounts}
+counts <- cosmx_kidney$counts
+str(counts)
+counts[1:5,1:5]
+```
+
+2. A data frame containing variables we wish to condition on. These are variables 
+that could induce uninteresting spatial correlation that would distract us from interesting results.
+Typically, this will include cell type (we don't just want to discover clusters of marker genes) and 
+technical variables like cells' signal strength ("totalcounts") and background level ("negmean").
+
+```{r strconditionon}
+# build the conditionon data frame:
+annot <- cosmx_kidney$annot
+conditionon <- annot[, c("fov", "totalcounts", "negmean", "celltype")]
+head(conditionon)
+```
+
+3. xy positions, which are used to build a neighbors network. If you have 
+multiple tissues with overlapping xy positions, then you'll have to specify a "tissue"
+argument as well. Alternatively, you 
+can provide your own neighbors network as a sparse adjacency matrix. 
+```{r xy}
+xy <- cosmx_kidney$xy
+plot(xy, pch = 16, cex = 0.5, col = "#00008B80",
+     asp = 1, xlab = "x mm", ylab = "y mm")
+```
+
+4. Cell type assignments. SPARC uses this information to assess the role of
+each cell type in each module of spatially co-expressed genes. 
+```{r strcelltype}
+celltype <- cosmx_kidney$annot$celltype
+str(celltype)
+```
+
+
+### Running SPARC
+
+The complete SPARC workflow consists of 4 steps:
+- Derive a spatial correlation matrix between genes, conditioning out the influence 
+ of variables like cell type and technical effects. 
+- From that correlation matrix, define gene modules
+- Score each cell for its module activity, and for the module activity in its neighborhood
+- "Cell type attribution" analysis: quantify the role of each cell type in each module.
+
+These steps can be run separately, or they can be run all at once using the sparc() function.
+To begin, let's run the function all at once:
+
+```{r runsparc}
+
+# normalize the counts data first:
+normcounts <- sweep(counts, 1, pmax(Matrix::rowSums(counts), 1), "/")
+
+res <- SPARC::sparc(
+               # fundamental input data:
+               counts = normcounts, conditionon = conditionon, celltype = celltype,
+               # args for neighbor definition:
+               neighbors = NULL, xy = xy, k = NULL, radius = 0.1, tissue = annot$fov, 
+               # args for module definition:
+               min_module_size = 2, max_module_size = 20, min_module_cor = 0.05,
+               gene_weighting_rule = "inverse_sqrt",   
+               # args for controlling memory and compute
+               roundcortozero = 0.1, max_cells = 1e5,                               
+               # args for cell type attribution scoring
+               attribution_subset_size = 1000,                                      
+               verbose = TRUE)
+
+str(res)
+```
+
+Our output has a number of components.
+First is the conditional correlation matrix:
+```{r rescondcor}
+heatmap(as.matrix(res$condcor))
+```
+
+Second we have the modules themselves. Each module is group of genes, with each gene given a weight:
+```{r resmodules}
+head(res$modules)
+```
+
+(In this very small dataset, relatively few genes have made their way into modules.)
+Modules are named using their 2-3 most influential genes, and the number of genes.
+E.g. the module "ITGA3_B2M_SPOCK2_3" is most impacted by ITGA3 and B2M, and it has 3 total genes.
+
+Third are the per-cell module scores. Two kinds of scores are calculated: 
+"single cell" scores, measuring module activity within a cell, and "environment" 
+scores, measuring module activity in a cell's environment. 
+
+```{r resscores}
+# single cell scores:
+head(res$scores_sc)
+# environment scores:
+head(res$scores_env)
+
+# plot one module's single cell and environmnt scores:
+viridiscols <- c('#000004FF', '#1B0C42FF', '#4B0C6BFF', '#781C6DFF', '#A52C60FF', '#CF4446FF', '#ED6925FF', '#FB9A06FF', '#F7D03CFF', '#FCFFA4FF')
+par(mfrow = c(1, 2))
+plot(xy, asp = 1, pch = 16, cex = 0.5, 
+     main = paste0(colnames(res$scores_env)[1], " single cell score"),
+     xlab = "x mm", ylab = "y mm",
+     col = viridiscols[1 + pmin(round(9 * (res$scores_sc[, 1] / quantile(res$scores_sc[, 1], 0.95))), 10)])
+plot(xy, asp = 1, pch = 16, cex = 0.5, 
+     main = paste0(colnames(res$scores_env)[1], " environment score"),
+     xlab = "x mm", ylab = "y mm",
+     col = viridiscols[1 + pmin(round(9 * (res$scores_env[, 1] / quantile(res$scores_env[, 1], 0.99))), 10)])
+
+```
+
+Next we have details of each cell type's involvement in each module. 
+The big-picture view is given by the "celltypeinvolvement" result:
+
+```{r rescelltypeinvolvement, fig.width = 10, fig.height = 5}
+heatmap(res$celltypeinvolvement, cexCol = .6, cexRow = .8, margins = c(8, 10))
+```
+
+In the above, we can see that PCT cells contribute most strongly to the "SAT1_SERPINA1_2" module,
+while the "ITGA3_B2M_SPOCK2_3" module has a broader set of cell types contributing. 
+
+For more detail, we can see how each cell type contributes to each gene within a single module. |
+The "attributionmats" result has this information:
+
+```{r resattributionmats, fig.width = 6, fig.height = 8}
+str(res$attributionmats)
+heatmap(res$attributionmats[[1]], cexCol = .8, cexRow = .8, margins = c(8, 14))
+```
+
+Here we can see that many very different cell types contribute to the genes in this module.
+
+
+### Workflow for exploring SPARC results:
+
+Once you've run SPARC, the we recommend exploring your results as follows:
+
+1. Look at module gene content to identify interesting modules. (But unless you
+know all the genes in the genome, expect that some interesting modules won't 
+attract your attention at this point.) 
+A network diagram on the conditional correlation matrix can be a nice way to visualize your results:
+
+<need to implement this plot>
+
+2. Look at the \code{celltypeinvolvement} output to see which modules involve the 
+cell types you're interested in.
+
+3. Look at spatial maps of module environment scores to get a general feel for module behavior. 
+
+Based on steps 1-3, you'll develop a handful of favorite modules. At this point, proceed to step 4:
+
+4. use your favorite interactive visualizer to plot individual transcripts from 
+ your module across space, and explore at length. 
+
+
+### Hands-on workflow 
+
+Advanced users wishing for more control can skip the main \code{sparc}
+wrapper function and run the workflow step-by-step, evaluating results as they go. 
+
+This uses 4 functions: 
+- \code{defineModules}, to derive gene modules from this matrix
+- \code{scoreModules}, to score cells for module activity at the single-cell and envirnemt level
+- \code{cellTypeAttribution}, to evaluate the role of each cell type in each module
+
+Below is an example workflow using these modules:
+```{r handsonworkflow}
+
+# get conditional correlation, deriving a neighbor network and an "environment matrix" along the way:
+step1 <- calcSpatialCor(counts = normcounts,
+                      conditionon = annot[, c("fov", "totalcounts", "negmean", "celltype")],
+                      neighbors = NULL,
+                      xy = xy,
+                      k = 50,
+                      radius = NULL,
+                      tissue = annot$fov, # example of using tissue in neighbor definition
+                      roundcortozero = 0.1,
+                      max_cells = 1e5,
+                      verbose = FALSE)
+str(step1)
+
+# derive Modules
+modules <- defineModules(condcor = step1$condcor,
+                            env = step1$env,
+                            min_module_size = 2,
+                            max_module_size = 20,
+                            resolution = 0.005,
+                            gene_weighting_rule = "inverse_sqrt")
+str(modules)
+
+# score cells for module activity:
+scores <- scoreModules(counts = normcounts,
+                       weights = modules$weights,
+                       neighbors = step1$neighbors)
+str(scores)
+
+# score cell type involvement:
+attribution <- cellTypeAttribution(
+  modulescores = scores$scores_env,
+  weights = modules$weights,
+  counts = normcounts,
+  celltype = annot$celltype,
+  neighbors = step1$neighbors,
+  nsub = 1000,
+  verbose = TRUE)
+
+str(attribution)
+```
+
+### Session Info
+
+```{r sessioninfo}
+sessionInfo()
+```
