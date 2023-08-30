@@ -86,7 +86,7 @@ get_modules_from_cor <- function(cormat, min_module_size = 3, max_module_size = 
     meancor = (sum(cormat[genes, genes]) - length(genes)) / (length(genes)^2 - length(genes)) # direct calculation to not break sparse matrix
     
     if (meancor > min_module_cor) {
-      newname <- cellKlatch:::name_module(cormat[genes, genes])
+      newname <- name_module(cormat[genes, genes])
       modules[[newname]] <- genes
     }
   }

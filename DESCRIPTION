@@ -2,7 +2,7 @@ Package: SPARC
 Title: Discover modules of spatially co-regulated genes
 Version: 0.0.0.9000
 Authors@R: 
-    person("Danaher", "Patrick", , "noemail", role = c("aut", "cre"),
+    person("Danaher", "Patrick", , "noemail@noemail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2844-5883"))
 Description: What the package does (one paragraph).
 License: See license file
