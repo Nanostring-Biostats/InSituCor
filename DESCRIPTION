@@ -12,4 +12,7 @@ RoxygenNote: 7.2.3
 Imports: 
     data.table,
     Matrix,
-    spatstat.geom
+    spatstat.geom,
+    Rfast,
+    uwot,
+    igraph
