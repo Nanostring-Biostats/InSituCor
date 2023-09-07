@@ -92,9 +92,11 @@ get_single_module_celltype_involvement <- function(scorevector, genes, counts, c
         neighbors = neighbors)
       
       # save correlation between module score and cell type-specific neighborhood expression:
-      attributionmat[cell, ] <- cor(scorevector, 
-                                    neighborhood_expression_in_celltype[, genes, drop = FALSE],
-                                    use = "pairwise.complete")
+      attributionmat[cell, ] <- suppressWarnings(
+        cor(scorevector, 
+            neighborhood_expression_in_celltype[, genes, drop = FALSE],
+            use = "pairwise.complete"))
+      attributionmat[cell, ] <- replace(attributionmat[cell, ], is.na(attributionmat[cell, ]), 0)
     }
   }
   

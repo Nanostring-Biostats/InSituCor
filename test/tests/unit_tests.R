@@ -10,7 +10,7 @@ rm(list = ls())
 data(cosmx_kidney)
 annot <- cosmx_kidney$annot
 counts <- cosmx_kidney$counts
-celltype <- cosmx_kidney$annot$celltype
+celltype <- as.factor(cosmx_kidney$annot$celltype)
 xy <- cosmx_kidney$xy
 neighbors <- radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
 
