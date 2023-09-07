@@ -19,7 +19,6 @@
 #' @importFrom spatstat.geom nnwhich
 #' @importFrom spatstat.geom nndist
 #' @importFrom Matrix sparseMatrix
-#' @export
 nearestNeighborGraph <- function(x, y, N, subset=1) {
   DT <- data.table::data.table(x = x, y = y, subset = subset)
   nearestNeighbor <- function(i) {
@@ -60,7 +59,6 @@ nearestNeighborGraph <- function(x, y, N, subset=1) {
 #' @importFrom Matrix sparseMatrix
 #' @importFrom spatstat.geom ppp
 #' @importFrom spatstat.geom closepairs
-#' @export
 radiusBasedGraph <- function(x, y, R, subset=1) {
   DT <- data.table::data.table(x = x, y = y, subset = subset)
   radiusNeighbor <- function(i) {

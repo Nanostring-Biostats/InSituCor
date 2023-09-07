@@ -12,7 +12,7 @@ annot <- cosmx_kidney$annot
 counts <- cosmx_kidney$counts
 celltype <- as.factor(cosmx_kidney$annot$celltype)
 xy <- cosmx_kidney$xy
-neighbors <- radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
+neighbors <- SPARC:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
 
 
 # for running functions line by line:
@@ -53,8 +53,8 @@ test_that("wrapper returns the expected results", {
 
 #### test neighbor definition: -----------------------
 
-neighbors <- radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
-neighbors <- nearestNeighborGraph(x = xy[, 1], y = xy[, 2], N = 50, subset=1)
+neighbors <- SPARC:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
+neighbors <- SPARC:::nearestNeighborGraph(x = xy[, 1], y = xy[, 2], N = 50, subset=1)
 # (should be sparse matrices with dim = nrow(xy).)
 
 
