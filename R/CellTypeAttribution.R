@@ -16,6 +16,9 @@
 cellTypeAttribution <- function(modulescores, weights, counts, celltype, neighbors,
                                  nsub = 5000, verbose = FALSE) {
   # initialize:
+  if(is.factor(celltype)) {
+    celltpe <- as.character(celltype)
+  }
   celltypes <- unique(celltype)
   involvescores <- matrix(0, length(weights), length(celltypes),
                           dimnames = list(names(weights), celltypes))

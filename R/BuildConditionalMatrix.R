@@ -15,6 +15,9 @@ build_conditional_matrix <- function(variables) {
   tempy = rnorm(nobs)
   allmat <- NULL
   for (i in 1:length(variables)) {
+    if (is.factor(variables[[i]])) {
+      variables[[i]] <- as.character(variables[[i]])
+    }
     mod <- lm(tempy ~ variables[[i]])
     newmat <- model.matrix(mod)[, -1, drop = FALSE]
     # if it's not positive definite, remove a row:
