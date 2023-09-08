@@ -20,6 +20,9 @@ build_conditional_matrix <- function(variables) {
     }
     mod <- lm(tempy ~ variables[[i]])
     newmat <- model.matrix(mod)[, -1, drop = FALSE]
+    if (ncol(newmat) == 1) {
+      colnames(newmat) <- names(variables)[i]
+    }
     # if it's not positive definite, remove a row:
     if (min(eigen(cov(newmat))$values) < 1e-4) {
       newmat <- newmat[, -1]

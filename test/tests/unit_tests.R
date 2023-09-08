@@ -9,6 +9,7 @@ rm(list = ls())
 #rm(temp)
 data(cosmx_kidney)
 annot <- cosmx_kidney$annot
+rownames(annot) <- annot$cell_ID
 counts <- cosmx_kidney$counts
 celltype <- as.factor(cosmx_kidney$annot$celltype)
 xy <- cosmx_kidney$xy
