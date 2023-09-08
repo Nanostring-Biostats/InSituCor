@@ -110,6 +110,9 @@ calcSpatialCor <- function(counts, conditionon = NULL,
   }
 
   ## get environment matrix: -----------------------
+  if (verbose) {
+    print("building environment expression matrix")
+  }
   env <- get_neighborhood_expression(counts = counts,
                                      neighbors = neighbors[use, ])
 
@@ -119,9 +122,15 @@ calcSpatialCor <- function(counts, conditionon = NULL,
                                                                   neighbors = neighbors[use, ])
 
   ## get matrix to be conditioned on: -------------------------
+  if (verbose) {
+    print("building confounder matrix")
+  }
   condmat <- build_conditional_matrix(conditionon_neighborhood_vals)
 
   ## get conditional cor: ---------------------
+  if (verbose) {
+    print("calculating conditional correlation")
+  }
   condcor <- get_conditional_correlation(mat = env, condmat = condmat, outputtype = "cor")
   # round low values to zero to save memory:
   if (!is.null(roundcortozero)) {
