@@ -31,14 +31,14 @@ if (FALSE) {
 #### test big wrapper -----------------------------------
 
 res <- sparc(counts = counts,
-               conditionon = annot[, c("fov", "totalcounts", "celltype")],
-               celltype = annot$celltype,
-               neighbors = NULL, xy = xy, k = NULL, radius = 0.05, tissue = annot$fov, # args for neighbor definition
-               min_module_size = 2, max_module_size = 8,                 # args for module definition
-               gene_weighting_rule = "inverse_sqrt",   # more args for module definition
-               roundcortozero = 0.1, max_cells = 1e5,                               # args for controlling memory and compute
-               attribution_subset_size = 1000,                                      # args for cell type attribution scoring
-               verbose = TRUE)
+             conditionon = annot[, c("fov", "totalcounts", "celltype")],
+             celltype = annot$celltype,
+             neighbors = NULL, xy = xy, k = NULL, radius = 0.05, tissue = annot$fov, # args for neighbor definition
+             min_module_size = 2, max_module_size = 8,                 # args for module definition
+             gene_weighting_rule = "inverse_sqrt",   # more args for module definition
+             roundcortozero = 0.1, max_cells = 1e5,                               # args for controlling memory and compute
+             attribution_subset_size = 1000,                                      # args for cell type attribution scoring
+             verbose = TRUE)
 
 test_that("wrapper returns the expected results", {
   expect_identical(colnames(res$modules), c("module", "gene", "weight"))
@@ -79,9 +79,14 @@ test_that("neighbor math has the right logic", {
   
   expect_equal(neighbor_colMeans(counts, neighbors)[1:5, ],
                neighbor_colMeans(counts, neighbors[1:5, ]))
+ 
+  expect_equal(neighbor_colMeans(counts, neighbors)[1:5, 1],
+               neighbor_mean(counts[, 1], neighbors)[1:5])
+ 
+  expect_equal(neighbor_colSums(counts, neighbors)[1:5, 1],
+               neighbor_sum(counts[, 1], neighbors)[1:5])
   
 })
-
 
 
 #### test functions calling neighborhood summaries: ----------------

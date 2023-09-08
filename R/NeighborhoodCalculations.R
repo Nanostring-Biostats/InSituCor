@@ -102,17 +102,21 @@ neighbor_mean <- function(x, neighbors) {
 #' for each cell, get the colSums of x over its neighbors:
 neighbor_colSums <- function(x, neighbors) {
   neighbors@x <- rep(1, length(neighbors@x))
-  neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
+  #neighbors <- Matrix::Diagonal(x=rep(1, nrow(neighbors)),names=rownames(neighbors)) %*% neighbors
+  neighbors <- Matrix::Diagonal(x=rep(1, nrow(neighbors))) %*% neighbors
   neighbors@x[neighbors@x==0] <- 1
-  return(neighbors %*% x)
+  out <- neighbors %*% x
+  return(out)
 }
 
 #' for each cell, get the colMeans of x over its neighbors:
 neighbor_colMeans <- function(x, neighbors) {
   neighbors@x <- rep(1, length(neighbors@x))
-  neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
+  #neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
+  neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors)) %*% neighbors
   neighbors@x[neighbors@x==0] <- 1
-  return(neighbors %*% x)
+  out <- neighbors %*% x
+  return(out)
 }
 
 #' for each cell, tabulate the distinct values of x over its neighbors:
@@ -171,8 +175,8 @@ get_neighborhood_expression <- function(counts, neighbors) {
   }
   # get clust-specific environment expression
   env <- neighbor_colMeans(counts, neighbors)
-
   rownames(env) <- rownames(neighbors)
+  env <- as.matrix(env)
   return(env)
 }
 
