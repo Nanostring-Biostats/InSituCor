@@ -31,6 +31,18 @@ calcSpatialCor <- function(counts, conditionon = NULL,
                        roundcortozero = 0.1, max_cells = 5000, verbose = TRUE) {
 
   ## checks: -------------------
+  
+  # check counts and conditionon are aligned:
+  if (!is.null(rownames(counts)) & !is.null(rownames(conditionon))) {
+    if (!identical(rownames(counts), rownames(conditionon))) {
+      warning("counts and conditionon have misaligned rownames")
+      message("counts rownames:")
+      message(head(rownames(counts)))
+      message("conditionon rownames:")
+      message(head(rownames(conditionon)))
+    }
+  }
+  
   # need xy or neighbors:
   if (is.null(xy) && is.null(neighbors)) {
     stop("need to provide either xy coords or a neighbors network")

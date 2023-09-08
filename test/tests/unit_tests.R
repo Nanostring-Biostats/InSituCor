@@ -15,6 +15,9 @@ xy <- cosmx_kidney$xy
 neighbors <- SPARC:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
 
 
+head(rownames(counts))
+head(rownames(annot))
+
 # for running functions line by line:
 if (FALSE) {
   conditionon = cbind(annot[, c("fov", "totalcounts")], celltype)
