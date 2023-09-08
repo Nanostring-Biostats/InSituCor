@@ -101,18 +101,18 @@ neighbor_mean <- function(x, neighbors) {
 
 #' for each cell, get the colSums of x over its neighbors:
 neighbor_colSums <- function(x, neighbors) {
-  tmp <- sapply(asplit(x, 2), function(vec) {
-    neighbor_sum(c(vec), neighbors)
-  })
-  return(tmp)
+  neighbors@x <- rep(1, length(neighbors@x))
+  neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
+  neighbors@x[neighbors@x==0] <- 1
+  return(neighbors %*% x)
 }
 
 #' for each cell, get the colMeans of x over its neighbors:
 neighbor_colMeans <- function(x, neighbors) {
-  tmp <- sapply(asplit(x, 2), function(vec) {
-    neighbor_mean(c(vec), neighbors)
-  })
-  return(tmp)
+  neighbors@x <- rep(1, length(neighbors@x))
+  neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
+  neighbors@x[neighbors@x==0] <- 1
+  return(neighbors %*% x)
 }
 
 #' for each cell, tabulate the distinct values of x over its neighbors:
