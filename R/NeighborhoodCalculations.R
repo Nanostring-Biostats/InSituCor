@@ -150,6 +150,9 @@ dataframe_neighborhood_summary <- function(df, neighbors) {
     if (is.numeric(df[, i])) {
       out[[i]] <- neighbor_sum(df[, i], neighbors)
     }
+    if (is.factor(df[, i])) {
+      df[, i] <- as.character(df[, i])
+    }
     if (is.character(df[, i])) {
       if (length(unique(df[, i])) > 200) {
         warning(paste0("Character variable ", colnames(df)[i], " has over 200 unique values. It is actually a numeric variable?"))
