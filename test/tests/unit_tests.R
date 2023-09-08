@@ -86,6 +86,8 @@ test_that("neighbor math has the right logic", {
   expect_equal(neighbor_colSums(counts, neighbors)[1:5, 1],
                neighbor_sum(counts[, 1], neighbors)[1:5])
   
+  expect_equal(neighbor_colSums(counts, neighbors)[1:5, 1],
+               neighbor_colSums(as.matrix(counts), neighbors)[1:5, 1])
 })
 
 
