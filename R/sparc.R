@@ -54,6 +54,9 @@ sparc <- function(counts, conditionon = NULL, celltype,
   rm(temp)
 
   ## derive modules
+  if (verbose) {
+    print("Defining modules")
+  }
   modules <- defineModules(condcor = condcor,
                               env = env,
                               min_module_size = min_module_size,
@@ -64,6 +67,9 @@ sparc <- function(counts, conditionon = NULL, celltype,
                               gene_weighting_rule = "inverse_sqrt")
 
   ## score modules
+  if (verbose) {
+    print("Calculating module scores for single cells and for cell neighborhoods")
+  }
   temp <- scoreModules(counts = counts,
                              weights = modules$weights,
                              neighbors = neighbors)
@@ -72,6 +78,9 @@ sparc <- function(counts, conditionon = NULL, celltype,
   rm(temp)
 
   ## calculate cell-gene attribution scores
+  if (verbose) {
+    print("Running cell type attribution analysis")
+  }
   attribres <- cellTypeAttribution(modulescores = scores_env,
                                                  weights = modules$weights,
                                                  counts = counts,

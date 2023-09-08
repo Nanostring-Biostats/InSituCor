@@ -15,4 +15,6 @@ Imports:
     spatstat.geom,
     Rfast,
     uwot,
-    igraph
+    igraph,
+    methods
+LazyData: true

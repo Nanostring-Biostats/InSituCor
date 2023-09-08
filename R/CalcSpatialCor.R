@@ -31,6 +31,18 @@ calcSpatialCor <- function(counts, conditionon = NULL,
                        roundcortozero = 0.1, max_cells = 5000, verbose = TRUE) {
 
   ## checks: -------------------
+  
+  # check counts and conditionon are aligned:
+  if (!is.null(rownames(counts)) & !is.null(rownames(conditionon))) {
+    if (!identical(rownames(counts), rownames(conditionon))) {
+      warning("counts and conditionon have misaligned rownames")
+      message("counts rownames:")
+      message(head(rownames(counts)))
+      message("conditionon rownames:")
+      message(head(rownames(conditionon)))
+    }
+  }
+  
   # need xy or neighbors:
   if (is.null(xy) && is.null(neighbors)) {
     stop("need to provide either xy coords or a neighbors network")
@@ -98,6 +110,9 @@ calcSpatialCor <- function(counts, conditionon = NULL,
   }
 
   ## get environment matrix: -----------------------
+  if (verbose) {
+    print("building environment expression matrix")
+  }
   env <- get_neighborhood_expression(counts = counts,
                                      neighbors = neighbors[use, ])
 
@@ -107,9 +122,15 @@ calcSpatialCor <- function(counts, conditionon = NULL,
                                                                   neighbors = neighbors[use, ])
 
   ## get matrix to be conditioned on: -------------------------
+  if (verbose) {
+    print("building confounder matrix")
+  }
   condmat <- build_conditional_matrix(conditionon_neighborhood_vals)
 
   ## get conditional cor: ---------------------
+  if (verbose) {
+    print("calculating conditional correlation")
+  }
   condcor <- get_conditional_correlation(mat = env, condmat = condmat, outputtype = "cor")
   # round low values to zero to save memory:
   if (!is.null(roundcortozero)) {

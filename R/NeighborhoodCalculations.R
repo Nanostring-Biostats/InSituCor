@@ -19,7 +19,6 @@
 #' @importFrom spatstat.geom nnwhich
 #' @importFrom spatstat.geom nndist
 #' @importFrom Matrix sparseMatrix
-#' @export
 nearestNeighborGraph <- function(x, y, N, subset=1) {
   DT <- data.table::data.table(x = x, y = y, subset = subset)
   nearestNeighbor <- function(i) {
@@ -60,7 +59,6 @@ nearestNeighborGraph <- function(x, y, N, subset=1) {
 #' @importFrom Matrix sparseMatrix
 #' @importFrom spatstat.geom ppp
 #' @importFrom spatstat.geom closepairs
-#' @export
 radiusBasedGraph <- function(x, y, R, subset=1) {
   DT <- data.table::data.table(x = x, y = y, subset = subset)
   radiusNeighbor <- function(i) {
@@ -103,18 +101,22 @@ neighbor_mean <- function(x, neighbors) {
 
 #' for each cell, get the colSums of x over its neighbors:
 neighbor_colSums <- function(x, neighbors) {
-  tmp <- sapply(asplit(x, 2), function(vec) {
-    neighbor_sum(c(vec), neighbors)
-  })
-  return(tmp)
+  neighbors@x <- rep(1, length(neighbors@x))
+  #neighbors <- Matrix::Diagonal(x=rep(1, nrow(neighbors)),names=rownames(neighbors)) %*% neighbors
+  neighbors <- Matrix::Diagonal(x=rep(1, nrow(neighbors))) %*% neighbors
+  neighbors@x[neighbors@x==0] <- 1
+  out <- neighbors %*% x
+  return(out)
 }
 
 #' for each cell, get the colMeans of x over its neighbors:
 neighbor_colMeans <- function(x, neighbors) {
-  tmp <- sapply(asplit(x, 2), function(vec) {
-    neighbor_mean(c(vec), neighbors)
-  })
-  return(tmp)
+  neighbors@x <- rep(1, length(neighbors@x))
+  #neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
+  neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors)) %*% neighbors
+  neighbors@x[neighbors@x==0] <- 1
+  out <- neighbors %*% x
+  return(out)
 }
 
 #' for each cell, tabulate the distinct values of x over its neighbors:
@@ -148,6 +150,9 @@ dataframe_neighborhood_summary <- function(df, neighbors) {
     if (is.numeric(df[, i])) {
       out[[i]] <- neighbor_sum(df[, i], neighbors)
     }
+    if (is.factor(df[, i])) {
+      df[, i] <- as.character(df[, i])
+    }
     if (is.character(df[, i])) {
       if (length(unique(df[, i])) > 200) {
         warning(paste0("Character variable ", colnames(df)[i], " has over 200 unique values. It is actually a numeric variable?"))
@@ -173,8 +178,8 @@ get_neighborhood_expression <- function(counts, neighbors) {
   }
   # get clust-specific environment expression
   env <- neighbor_colMeans(counts, neighbors)
-
   rownames(env) <- rownames(neighbors)
+  env <- as.matrix(env)
   return(env)
 }
 

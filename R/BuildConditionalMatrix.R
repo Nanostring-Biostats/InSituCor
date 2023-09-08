@@ -15,8 +15,14 @@ build_conditional_matrix <- function(variables) {
   tempy = rnorm(nobs)
   allmat <- NULL
   for (i in 1:length(variables)) {
+    if (is.factor(variables[[i]])) {
+      variables[[i]] <- as.character(variables[[i]])
+    }
     mod <- lm(tempy ~ variables[[i]])
     newmat <- model.matrix(mod)[, -1, drop = FALSE]
+    if (ncol(newmat) == 1) {
+      colnames(newmat) <- names(variables)[i]
+    }
     # if it's not positive definite, remove a row:
     if (min(eigen(cov(newmat))$values) < 1e-4) {
       newmat <- newmat[, -1]
