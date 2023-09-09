@@ -53,8 +53,8 @@ plotCorrelationNetwork <- function(x, modules, genes = NULL, corthresh = 0.2, sh
   #  color by module:
   igraph::V(gr0)$module <- modules[match(genes, names(igraph::V(gr0)))]
   
-  if (is.null(vertex.size)) {
-    vertex.size <- 2 * (1 - show_gene_names)
+  if (is.null(vertex_size)) {
+    vertex_size <- 2 * (1 - show_gene_names)
   }
   igraph::plot.igraph(gr0, 
               layout = xum, 
