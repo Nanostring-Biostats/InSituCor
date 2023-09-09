@@ -24,6 +24,12 @@ defineModules(
 
 \item{max_module_size}{Modules bigger than than this are subclustered}
 
+\item{resolution}{Resolution parameter for leiden clustering}
+
+\item{corthresh}{Correlations with absolute value below this will be rounded to zero to save memory}
+
+\item{min_module_cor}{Modules must have mean correlation of at least this much to be reported}
+
 \item{gene_weighting_rule}{How to define modules' gene weights, absed on gene expression levels.
 One of "inverse_sqrt", "inverse", or "identity".}
 }

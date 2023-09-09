@@ -14,22 +14,27 @@
 #'   Rows correspond to the rows of counts and xy. At a minimum, it is recommended to include cell type
 #'   and tissue ID. Including cell signal strength (total counts) and background (negmean) is also recommended.
 #' @param celltype Vector of cell type assignments
-#' @param neighbors Neighbor relationships, stored as a ___________
+#' @param neighbors Neighbor relationships, stored as a sparse matrix
 #' @param xy Matrix of xy coordinates.
 #' @param k k for k-nearest neighbor network building
 #' @param radius Radius for neighbor network building
 #' @param tissue Used for neighbor network building. Neighbors will only be considered for cell with the same tissue value.
-#' @param mincor Correlation values below this threshold will be stored as 0 to allow for a sparse matrix
+#' @param roundcortozero Correlation values below this threshold will be stored as 0 to allow for a sparse matrix
+#' @param min_module_size Modules smaller than this are discarded
+#' @param max_module_size Modules bigger than than this are subclustered
+#' @param gene_weighting_rule How to define modules' gene weights, absed on gene expression levels.
+#'   One of "inverse_sqrt", "inverse", or "identity".
 #' @param resolution Argument to igraph::cluster_leiden. Lower values produce bigger clusters. 
 #' @param corthresh Only correlations about this value will go into the adjacency graph fed into leiden clustering
 #' @param min_module_cor Only keep modules with average cor above this value.
 #' @param max_cells If there are more than this many cells, certain steps will use a random subset of this size.
 #'   Output will still be for all cells.
+#' @param attribution_subset_size Subsample size to use in attribution analysis. This function only extracts correlations, so 5000 cells is ample.
+#' @param verbose Whether to print progress
 #' @return A list, with the following elements:
 #' \itemize{
-#'  \item (omit bc it's huge?) envmat: A matrix of cell * gene environment expression levels.
 #'  \item condcor: A sparse matrix holding genes' conditional correlations.
-#'  \item modules: A ____ detailing gene module membership and weights
+#'  \item modules: A data frame detailing gene module membership and weights
 #'  \item scores_env: A matrix of cell * module environment scores
 #'  \item scores_sc: A matrix of cell * module single cell scores
 #'  \item attributionmats: A list of matrices holding attribution scores for each cell type * gene in each module.

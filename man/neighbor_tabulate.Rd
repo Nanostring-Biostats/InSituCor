@@ -6,6 +6,11 @@
 \usage{
 neighbor_tabulate(x, neighbors)
 }
+\arguments{
+\item{x}{A vector of categorical values}
+
+\item{neighbors}{A (probably sparse) adjacency matrix}
+}
 \description{
 for each cell, tabulate the distinct values of x over its neighbors:
 }

@@ -9,6 +9,7 @@
 #' @param conditionon Data frame of variables to be conditioned on when computing gene correlation.
 #'   Rows correspond to the rows of counts and xy. At a minimum, it is recommended to include cell type
 #'   and tissue ID. Including cell signal strength (total counts) and background (negmean) is also recommended.
+#' @param neighbors Neighbor relationships, stored as a sparse matrix
 #' @param xy Matrix of xy coordinates
 #' @param k k for k-nearest neighbor network building
 #' @param radius Radius for neighbor network building
@@ -17,8 +18,7 @@
 #'  to allow for a sparse matrix. If set to NULL, then no rounding to 0 will happen, and a dense matrix will be returned.
 #' @param max_cells If there are more than this many cells, certain steps will use a random subset of this size.
 #'   Output will still be for all cells.
-#' @param return_envmat logical, for whether to return the environment matrix. Default FALSE.
-#'   Note the environment matrix is only computed over the subset.
+#' @param verbose Whether to print progress
 #' @return A list with 3 elements:
 #' \itemize{
 #' \item condcor: The conditional correlation matrix

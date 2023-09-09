@@ -6,6 +6,12 @@
 \usage{
 cov2cor(covmat)
 }
+\arguments{
+\item{covmat}{A covariance matrix}
+}
+\value{
+A correlation matrix
+}
 \description{
 convert covariance matrix to correlation:
 }

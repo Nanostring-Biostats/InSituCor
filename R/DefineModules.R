@@ -6,6 +6,9 @@
 #' @param max_module_size Modules bigger than than this are subclustered
 #' @param gene_weighting_rule How to define modules' gene weights, absed on gene expression levels.
 #'   One of "inverse_sqrt", "inverse", or "identity".
+#' @param resolution Resolution parameter for leiden clustering
+#' @param corthresh Correlations with absolute value below this will be rounded to zero to save memory
+#' @param min_module_cor Modules must have mean correlation of at least this much to be reported
 #' @return A data frame giving module name, gene name, and gene weight, for all genes included in a module.
 #' @export
 defineModules <- function(condcor, env, min_module_size = 3, max_module_size = 20,
@@ -25,7 +28,7 @@ defineModules <- function(condcor, env, min_module_size = 3, max_module_size = 2
   # return:
   out = list(modules = modules,
              weights = weights,
-             weightsdf = weightsdf)                                             #<----------- would be cleaner if only weightsdf was used downstream
+             weightsdf = weightsdf)                                            
   return(out)
 }
 

@@ -9,13 +9,14 @@
 #' @param corthresh Connect genes with cor > this value
 #' @param show_gene_names Logical
 #' @param vertex_size Argument passed to igraph
+#' @param ... Arguments passes to igraph
 #' @return A plot.igraph plot
 #' @importFrom igraph V
 #' @importFrom igraph plot.igraph
 #' @importFrom uwot umap
 #' @export
 plotCorrelationNetwork <- function(x, modules, genes = NULL, corthresh = 0.2, show_gene_names = FALSE,
-                           vertex.size = NULL, ...) {
+                           vertex_size = NULL, ...) {
   
   # format modules as a named vector:
   if (is.data.frame(modules)) {
@@ -58,7 +59,7 @@ plotCorrelationNetwork <- function(x, modules, genes = NULL, corthresh = 0.2, sh
   igraph::plot.igraph(gr0, 
               layout = xum, 
               vertex.label = unlist(list(NA, names(igraph::V(gr0)))[1 + show_gene_names]), 
-              vertex.size = vertex.size, #edge.size = 1, 
+              vertex.size = vertex_size, #edge.size = 1, 
               vertex.color = distinctcolors[igraph::V(gr0)$module], 
               vertex.label.color = distinctcolors[igraph::V(gr0)$module],
               ...)

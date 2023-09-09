@@ -7,7 +7,7 @@
 neighbor_mean(x, neighbors)
 }
 \arguments{
-\item{x}{A vector}
+\item{x}{A numeric vector}
 
 \item{neighbors}{A (probably sparse) adjacency matrix}
 }

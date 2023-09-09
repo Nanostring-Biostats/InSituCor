@@ -8,8 +8,9 @@
 #' @param weights List of module gene weights.
 #' @param counts Single cell expression matrix, cells in rows, genes in columns. The same data used in earlier steps.
 #' @param celltype Vector of cell types
-#' @param neighbors Neighbor relationships, stored as a ___________
+#' @param neighbors Neighbor relationships, stored as a sparse matrix
 #' @param nsub Subsample size to use. This function only extracts correlations, so 5000 cells is ample
+#' @param verbose Whether to print progress
 #' @return A list with two elements: "involvescores", a matrix of module * cell type scores, from 0-1.
 #'         "attributionmats", a list of matrices giving the involvement of each cell type in each gene in each cluster.
 #' @export

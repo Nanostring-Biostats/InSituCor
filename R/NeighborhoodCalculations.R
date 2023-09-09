@@ -81,7 +81,7 @@ radiusBasedGraph <- function(x, y, R, subset=1) {
 
 
 #' for each cell, get the sum of x's values over its neighbors:
-#' @param x A vector
+#' @param x A numeric vector
 #' @param neighbors A (probably sparse) adjacency matrix
 #' @importFrom Matrix rowSums
 neighbor_sum <- function(x, neighbors) {
@@ -91,7 +91,7 @@ neighbor_sum <- function(x, neighbors) {
 
 
 #' for each cell, get the mean of x's values over its neighbors:
-#' @param x A vector
+#' @param x A numeric vector
 #' @param neighbors A (probably sparse) adjacency matrix
 #' @importFrom Matrix rowSums
 neighbor_mean <- function(x, neighbors) {
@@ -100,6 +100,8 @@ neighbor_mean <- function(x, neighbors) {
 
 
 #' for each cell, get the colSums of x over its neighbors:
+#' @param x A matrix
+#' @param neighbors A (probably sparse) adjacency matrix
 neighbor_colSums <- function(x, neighbors) {
   neighbors@x <- rep(1, length(neighbors@x))
   #neighbors <- Matrix::Diagonal(x=rep(1, nrow(neighbors)),names=rownames(neighbors)) %*% neighbors
@@ -110,6 +112,8 @@ neighbor_colSums <- function(x, neighbors) {
 }
 
 #' for each cell, get the colMeans of x over its neighbors:
+#' @param x A matrix
+#' @param neighbors A (probably sparse) adjacency matrix
 neighbor_colMeans <- function(x, neighbors) {
   neighbors@x <- rep(1, length(neighbors@x))
   #neighbors <- Matrix::Diagonal(x=1/Matrix::rowSums(neighbors),names=rownames(neighbors)) %*% neighbors
@@ -120,6 +124,8 @@ neighbor_colMeans <- function(x, neighbors) {
 }
 
 #' for each cell, tabulate the distinct values of x over its neighbors:
+#' @param x A vector of categorical values
+#' @param neighbors A (probably sparse) adjacency matrix
 neighbor_tabulate <- function(x, neighbors) {
   uniquevals <- unique(x)
   sapply(uniquevals, function(val){
@@ -129,6 +135,8 @@ neighbor_tabulate <- function(x, neighbors) {
 }
 
 #' for each cell, tabulate the distinct values of x over its neighbors:
+#' @param x A vector of categorical values
+#' @param neighbors A (probably sparse) adjacency matrix
 neighbor_meantabulate <- function(x, neighbors) {
   uniquevals <- unique(x)
   sapply(uniquevals, function(val){

@@ -6,6 +6,11 @@
 \usage{
 neighbor_colSums(x, neighbors)
 }
+\arguments{
+\item{x}{A matrix}
+
+\item{neighbors}{A (probably sparse) adjacency matrix}
+}
 \description{
 for each cell, get the colSums of x over its neighbors:
 }
