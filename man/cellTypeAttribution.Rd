@@ -23,9 +23,11 @@ cellTypeAttribution(
 
 \item{celltype}{Vector of cell types}
 
-\item{neighbors}{Neighbor relationships, stored as a ___________}
+\item{neighbors}{Neighbor relationships, stored as a sparse matrix}
 
 \item{nsub}{Subsample size to use. This function only extracts correlations, so 5000 cells is ample}
+
+\item{verbose}{Whether to print progress}
 }
 \value{
 A list with two elements: "involvescores", a matrix of module * cell type scores, from 0-1.

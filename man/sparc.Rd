@@ -34,7 +34,7 @@ and tissue ID. Including cell signal strength (total counts) and background (neg
 
 \item{celltype}{Vector of cell type assignments}
 
-\item{neighbors}{Neighbor relationships, stored as a ___________}
+\item{neighbors}{Neighbor relationships, stored as a sparse matrix}
 
 \item{xy}{Matrix of xy coordinates.}
 
@@ -44,23 +44,33 @@ and tissue ID. Including cell signal strength (total counts) and background (neg
 
 \item{tissue}{Used for neighbor network building. Neighbors will only be considered for cell with the same tissue value.}
 
+\item{min_module_size}{Modules smaller than this are discarded}
+
+\item{max_module_size}{Modules bigger than than this are subclustered}
+
 \item{resolution}{Argument to igraph::cluster_leiden. Lower values produce bigger clusters.}
 
 \item{corthresh}{Only correlations about this value will go into the adjacency graph fed into leiden clustering}
 
 \item{min_module_cor}{Only keep modules with average cor above this value.}
 
+\item{gene_weighting_rule}{How to define modules' gene weights, absed on gene expression levels.
+One of "inverse_sqrt", "inverse", or "identity".}
+
+\item{roundcortozero}{Correlation values below this threshold will be stored as 0 to allow for a sparse matrix}
+
 \item{max_cells}{If there are more than this many cells, certain steps will use a random subset of this size.
 Output will still be for all cells.}
 
-\item{mincor}{Correlation values below this threshold will be stored as 0 to allow for a sparse matrix}
+\item{attribution_subset_size}{Subsample size to use in attribution analysis. This function only extracts correlations, so 5000 cells is ample.}
+
+\item{verbose}{Whether to print progress}
 }
 \value{
 A list, with the following elements:
 \itemize{
-\item (omit bc it's huge?) envmat: A matrix of cell * gene environment expression levels.
 \item condcor: A sparse matrix holding genes' conditional correlations.
-\item modules: A ____ detailing gene module membership and weights
+\item modules: A data frame detailing gene module membership and weights
 \item scores_env: A matrix of cell * module environment scores
 \item scores_sc: A matrix of cell * module single cell scores
 \item attributionmats: A list of matrices holding attribution scores for each cell type * gene in each module.

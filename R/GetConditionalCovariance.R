@@ -18,6 +18,8 @@ get_conditional_correlation <- function(mat = NULL, condmat = NULL, outputtype =
 }
 
 #' convert covariance matrix to correlation:
+#' @param covmat A covariance matrix
+#' @return A correlation matrix
 cov2cor <- function(covmat) {
   vars <- diag(covmat)
   cormat <- diag(vars^-0.5) %*% covmat %*% diag(vars^-0.5)

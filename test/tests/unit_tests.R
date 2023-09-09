@@ -48,7 +48,6 @@ test_that("wrapper returns the expected results", {
   expect_identical(colnames(res$modules), c("module", "gene", "weight"))
   expect_true(nrow(res$scores_env) == nrow(counts))
   expect_true(nrow(res$scores_sc) == nrow(counts))
-  #expect_true(class(res$condcor) == "dgCMatrix")
   expect_true(is(res$condcor, 'sparseMatrix'))
   expect_true(is.matrix(res$celltypeinvolvement))
   expect_true(is.matrix(res$attributionmats[[1]]))
@@ -129,7 +128,6 @@ test_that("calcSpatialCor  is correct", {
   expect_true(class(tmp$condcor) == "dsCMatrix")
   expect_true(is.matrix(tmp$env))
   expect_true(class(tmp$neighbors) == "dgCMatrix")
-
   expect_identical(dim(tmp$condcor), rep(ncol(counts), 2))
   expect_identical(dim(tmp$env), dim(counts))
   expect_identical(dim(tmp$neighbors), rep(nrow(xy), 2))
@@ -141,16 +139,12 @@ modules <- defineModules(condcor = tmp$condcor,
                               min_module_size = 2,
                               max_module_size = 20,
                               gene_weighting_rule = "inverse_sqrt")
-# getting a warning: "<sparse>[ <logic> ]: .M.sub.i.logical() maybe inefficient"
 test_that("defineModules is correct", {
   expect_true(is.list(modules))
-
   expect_true(is.list(modules$modules))
   expect_true(is.character(modules$modules[[1]]))
-
   expect_true(is.list(modules$weights))
   expect_true(is.numeric(modules$weights[[1]]))
-
   expect_true(is.data.frame(modules$weightsdf))
 })
 
@@ -179,12 +173,10 @@ attribution <- cellTypeAttribution(
 
 test_that("score_module_celltype_involvement is correct", {
   expect_true(is.list(attribution))
-
   expect_true(is.matrix(attribution$involvescores))
   expect_identical(dimnames(attribution$involvescores)[[1]], names(modules$weights))
   expect_true(length(setdiff(dimnames(attribution$involvescores)[[2]], unique(annot$celltype))) == 0)
   expect_true(length(setdiff(unique(annot$celltype), dimnames(attribution$involvescores)[[2]])) == 0)
-
   expect_true(is.matrix(attribution$attributionmats[[1]]))
   expect_identical(colnames(attribution$attributionmats[[1]]), names(modules$weights[[1]]))
   expect_true(length(setdiff(rownames(attribution$attributionmats[[1]]), unique(annot$celltype))) == 0)

@@ -24,6 +24,8 @@ calcSpatialCor(
 Rows correspond to the rows of counts and xy. At a minimum, it is recommended to include cell type
 and tissue ID. Including cell signal strength (total counts) and background (negmean) is also recommended.}
 
+\item{neighbors}{Neighbor relationships, stored as a sparse matrix}
+
 \item{xy}{Matrix of xy coordinates}
 
 \item{k}{k for k-nearest neighbor network building}
@@ -38,8 +40,7 @@ to allow for a sparse matrix. If set to NULL, then no rounding to 0 will happen,
 \item{max_cells}{If there are more than this many cells, certain steps will use a random subset of this size.
 Output will still be for all cells.}
 
-\item{return_envmat}{logical, for whether to return the environment matrix. Default FALSE.
-Note the environment matrix is only computed over the subset.}
+\item{verbose}{Whether to print progress}
 }
 \value{
 A list with 3 elements:

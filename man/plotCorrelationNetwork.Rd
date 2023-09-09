@@ -10,7 +10,7 @@ plotCorrelationNetwork(
   genes = NULL,
   corthresh = 0.2,
   show_gene_names = FALSE,
-  vertex.size = NULL,
+  vertex_size = NULL,
   ...
 )
 }
@@ -26,6 +26,8 @@ plotCorrelationNetwork(
 \item{show_gene_names}{Logical}
 
 \item{vertex_size}{Argument passed to igraph}
+
+\item{...}{Arguments passes to igraph}
 }
 \value{
 A plot.igraph plot
