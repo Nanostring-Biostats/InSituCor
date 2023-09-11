@@ -41,7 +41,7 @@
 #'  \item celltypeinvolvement: A matrix giving the maximum attribution score for each cell type in each module.
 #' }
 #' @export
-sparc <- function(counts, conditionon = NULL, celltype,
+insitucor <- function(counts, conditionon = NULL, celltype,
                        neighbors = NULL, xy = NULL, k = NULL, radius = NULL, tissue = NULL, # args for neighbor definition
                        min_module_size = 3, max_module_size = 20,                           # args for module definition
                        resolution = 0.02, corthresh = 0.1, min_module_cor = 0.1, gene_weighting_rule = "inverse_sqrt",   # more args for module definition

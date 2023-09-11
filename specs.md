@@ -1,6 +1,6 @@
 
 
-#### Specs for sparc:
+#### Specs for insitucor:
 expect_identical(colnames(res$modules), c("module", "gene", "weight"))
   expect_true(nrow(res$scores_env) == nrow(counts))
   expect_true(nrow(res$scores_sc) == nrow(counts))

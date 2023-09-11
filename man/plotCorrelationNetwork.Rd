@@ -17,7 +17,7 @@ plotCorrelationNetwork(
 \arguments{
 \item{x}{Correlation matrix}
 
-\item{modules}{Either the "modules" data frame output by sparc(), or a vector of module names.}
+\item{modules}{Either the "modules" data frame output by insitucor(), or a vector of module names.}
 
 \item{genes}{If \code{modules} is given as a vector, then specify the vector of genes corresponding to it.}
 
