@@ -1,10 +1,10 @@
-Package: SPARC
+Package: InSituCor
 Title: Discover modules of spatially co-regulated genes
 Version: 0.0.0.9000
 Authors@R: 
     person("Danaher", "Patrick", , "noemail@noemail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2844-5883"))
-Description: What the package does (one paragraph).
+Description: Designed for single-cell spatial transcriptomics data, such as is created by the CosMx platform. Finds modules of spatially correlated genes - i.e. genes that tend to be expressed in the same regions as each other. Importantly, insitucor first conditions on factors like cell type, isolating correlations that can't be explained by trivial factors.
 License: See license file
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -1,12 +1,12 @@
 ---
-title: "SPARC quick start vignette"
+title: "InSituCor quick start vignette"
 output: 
 rmarkdown::html_vignette: 
 toc: true
 fig_width: 7 
 fig_height: 8 
 vignette: >
-  %\VignetteIndexEntry{Straightforward SPARC run}
+  %\VignetteIndexEntry{Straightforward InSituCor run}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,34 +25,34 @@ knitr::opts_chunk$set(
 ### Installation
 ```{r installation, eval=FALSE}
 
-#devtools::install_github("https://github.com/Nanostring-Biostats/SPARC")
-# setwd() in Rstudio to the SPARC directory
+#devtools::install_github("https://github.com/Nanostring-Biostats/InSituCor")
+# setwd() in Rstudio to the InSituCor directory
 # run devtools::install()
 
 ```   
 
 ### Overview
 
-The SPARC algorithm identifies modules of "spatially co-expressed" genes - i.e.
+The InSituCor algorithm identifies modules of "spatially co-expressed" genes - i.e.
 genes that tend to be expressed in the same tissue regions as each other. 
 These modules should reveal interesting patterns in the data deserving deeper exploration.
 
-Once spatially co-expressed modules have been detected, SPARC provides a number 
+Once spatially co-expressed modules have been detected, InSituCor provides a number 
 of tools to help explore and interpret them.
 
-SPARC attempts to weed out "uninteresting" or trivial spatial correlations, for example
+InSituCor attempts to weed out "uninteresting" or trivial spatial correlations, for example
 those driven by cell type distribution. (E.g. if plasmablasts are spatially clustered, 
 we aren't interested in learning that IgG genes are spatially correlated, unless that correlation
 goes beyond what the spatial distribution of plasmablasts can explain.)
 
-This vignette demonstrates the use of the SPARC algorithm to find groups of spatially co-expressed genes in [CosMx](https://www.nature.com/articles/s41587-022-01483-z) data. CosMx is a spatial molecular imager for sub-cellular resolution of mRNA transcripts and protein targets. We analyze a subset of a lupus nephritis experiment. 
+This vignette demonstrates the use of the InSituCor algorithm to find groups of spatially co-expressed genes in [CosMx](https://www.nature.com/articles/s41587-022-01483-z) data. CosMx is a spatial molecular imager for sub-cellular resolution of mRNA transcripts and protein targets. We analyze a subset of a lupus nephritis experiment. 
 
 ### Preliminaries
 First, we load the package and access the example data:
 ```{r setup}
 set.seed(0)
 
-library(SPARC)
+library(InSituCor)
 data(cosmx_kidney)
 str(cosmx_kidney)
 ```
@@ -89,7 +89,7 @@ plot(xy, pch = 16, cex = 0.5, col = "#00008B80",
      asp = 1, xlab = "x mm", ylab = "y mm")
 ```
 
-4. Cell type assignments. SPARC uses this information to assess the role of
+4. Cell type assignments. InSituCor uses this information to assess the role of
 each cell type in each module of spatially co-expressed genes. 
 ```{r strcelltype}
 celltype <- cosmx_kidney$annot$celltype
@@ -97,24 +97,24 @@ str(celltype)
 ```
 
 
-### Running SPARC
+### Running InSituCor
 
-The complete SPARC workflow consists of 4 steps:
+The complete InSituCor workflow consists of 4 steps:
 - Derive a spatial correlation matrix between genes, conditioning out the influence 
  of variables like cell type and technical effects. 
 - From that correlation matrix, define gene modules
 - Score each cell for its module activity, and for the module activity in its neighborhood
 - "Cell type attribution" analysis: quantify the role of each cell type in each module.
 
-These steps can be run separately, or they can be run all at once using the sparc() function.
+These steps can be run separately, or they can be run all at once using the insitucor() function.
 To begin, let's run the function all at once:
 
-```{r runsparc}
+```{r runInSituCor}
 
 # normalize the counts data first:
 normcounts <- sweep(counts, 1, pmax(Matrix::rowSums(counts), 1), "/")
 
-res <- SPARC::sparc(
+res <- insitucor(
                # fundamental input data:
                counts = normcounts, conditionon = conditionon, celltype = celltype,
                # args for neighbor definition:
@@ -127,7 +127,6 @@ res <- SPARC::sparc(
                # args for cell type attribution scoring
                attribution_subset_size = 1000,                                      
                verbose = TRUE)
-
 str(res)
 ```
 
@@ -191,9 +190,9 @@ heatmap(res$attributionmats[[1]], cexCol = .8, cexRow = .8, margins = c(8, 14))
 Here we can see that many very different cell types contribute to the genes in this module.
 
 
-### Workflow for exploring SPARC results:
+### Workflow for exploring InSituCor results:
 
-Once you've run SPARC, the we recommend exploring your results as follows:
+Once you've run InSituCor, the we recommend exploring your results as follows:
 
 1. Look at module gene content to identify interesting modules. (But unless you
 know all the genes in the genome, expect that some interesting modules won't 
@@ -215,7 +214,7 @@ Based on steps 1-3, you'll develop a handful of favorite modules. At this point,
 
 ### Hands-on workflow 
 
-Advanced users wishing for more control can skip the main \code{sparc}
+Advanced users wishing for more control can skip the main \code{insitucor}
 wrapper function and run the workflow step-by-step, evaluating results as they go. 
 
 This uses 4 functions: 

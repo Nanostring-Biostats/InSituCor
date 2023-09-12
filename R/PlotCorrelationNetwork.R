@@ -4,7 +4,7 @@
 #' Makes an adjacency graph between genes by thresholding the correlation matrix,
 #' then draws an igraph plot, coloring genes by module membership.#' 
 #' @param x Correlation matrix
-#' @param modules Either the "modules" data frame output by sparc(), or a vector of module names.
+#' @param modules Either the "modules" data frame output by insitucor(), or a vector of module names.
 #' @param genes If \code{modules} is given as a vector, then specify the vector of genes corresponding to it. 
 #' @param corthresh Connect genes with cor > this value
 #' @param show_gene_names Logical

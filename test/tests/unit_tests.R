@@ -1,5 +1,5 @@
 library(testthat)
-library(SPARC)
+library(InSituCor)
 rm(list = ls())
 #temp <- readRDS("data/mini CosMx kidney.RDS")
 #annot <- temp$annot
@@ -13,7 +13,7 @@ rownames(annot) <- annot$cell_ID
 counts <- cosmx_kidney$counts
 celltype <- as.factor(cosmx_kidney$annot$celltype)
 xy <- cosmx_kidney$xy
-neighbors <- SPARC:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
+neighbors <- InSituCor:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
 
 
 head(rownames(counts))
@@ -34,7 +34,7 @@ if (FALSE) {
 
 #### test big wrapper -----------------------------------
 
-res <- sparc(counts = counts,
+res <- insitucor(counts = counts,
              conditionon = annot[, c("fov", "totalcounts", "celltype")],
              celltype = annot$celltype,
              neighbors = NULL, xy = xy, k = NULL, radius = 0.05, tissue = annot$fov, # args for neighbor definition
@@ -56,8 +56,8 @@ test_that("wrapper returns the expected results", {
 
 #### test neighbor definition: -----------------------
 
-neighbors <- SPARC:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
-neighbors <- SPARC:::nearestNeighborGraph(x = xy[, 1], y = xy[, 2], N = 50, subset=1)
+neighbors <- InSituCor:::radiusBasedGraph(x = xy[, 1], y = xy[, 2], R = 0.05, subset=1)
+neighbors <- InSituCor:::nearestNeighborGraph(x = xy[, 1], y = xy[, 2], N = 50, subset=1)
 # (should be sparse matrices with dim = nrow(xy).)
 
 

@@ -2,8 +2,8 @@
 
 
 
-#### Reqs for sparc:
-SPARC calls the complete workflow for spatial correlation analysis. 
+#### Reqs for insitucor:
+insitucor calls the complete workflow for spatial correlation analysis. 
 
 ##### Inputs:
 - counts Single cell expression matrix. Normalizing the data to give every cell the same total expression is preferred.

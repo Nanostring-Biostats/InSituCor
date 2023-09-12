@@ -1,9 +1,9 @@
-# SPARC
+# InSituCor
 An R package for discovering modules of spatially correlated genes in spatial transcriptomics data.
 
 
 ### dev notes
-- The "sparc" function runs the whole pipeline. 
+- The "insitucor" function runs the whole pipeline. 
 - Alternatively, you can run the intermediate wrapper functions one at a time. 
 
 
@@ -20,9 +20,9 @@ See the "vignettes" folder. Vignettes should run in <2 minutes.
 
 #### workflow:
 
-![image](https://github.com/Nanostring-Biostats/cellKlatch/assets/4357938/a5c64654-941c-4323-8932-fd7e9f48f615)
- 
+<img width="447" alt="workflow" src="https://github.com/Nanostring-Biostats/SPARC/assets/4357938/a00d2985-1f01-4e6d-acac-7ef907e1ac2a">
 
+ 
 ### Reproduction instructions
 
 
