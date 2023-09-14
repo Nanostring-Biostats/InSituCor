@@ -76,6 +76,7 @@ technical variables like cells' signal strength ("totalcounts") and background l
 # build the conditionon data frame:
 annot <- cosmx_kidney$annot
 conditionon <- annot[, c("fov", "totalcounts", "negmean", "celltype")]
+rownames(conditionon) <- annot$cell_ID
 head(conditionon)
 ```
 
@@ -100,6 +101,7 @@ str(celltype)
 ### Running InSituCor
 
 The complete InSituCor workflow consists of 4 steps:
+
 - Derive a spatial correlation matrix between genes, conditioning out the influence 
  of variables like cell type and technical effects. 
 - From that correlation matrix, define gene modules
@@ -114,6 +116,9 @@ To begin, let's run the function all at once:
 # normalize the counts data first:
 normcounts <- sweep(counts, 1, pmax(Matrix::rowSums(counts), 1), "/")
 
+# Call insitucor:
+# Note that this tiny example dataset forced use of some non-default argument values.
+# For general use, default vaues are recommended.
 res <- insitucor(
                # fundamental input data:
                counts = normcounts, conditionon = conditionon, celltype = celltype,
@@ -158,11 +163,11 @@ head(res$scores_env)
 # plot one module's single cell and environmnt scores:
 viridiscols <- c('#000004FF', '#1B0C42FF', '#4B0C6BFF', '#781C6DFF', '#A52C60FF', '#CF4446FF', '#ED6925FF', '#FB9A06FF', '#F7D03CFF', '#FCFFA4FF')
 par(mfrow = c(1, 2))
-plot(xy, asp = 1, pch = 16, cex = 0.5, 
+plot(xy, asp = 1, pch = 16, cex = 0.5, cex.main = 0.75,
      main = paste0(colnames(res$scores_env)[1], " single cell score"),
      xlab = "x mm", ylab = "y mm",
      col = viridiscols[1 + pmin(round(9 * (res$scores_sc[, 1] / quantile(res$scores_sc[, 1], 0.95))), 10)])
-plot(xy, asp = 1, pch = 16, cex = 0.5, 
+plot(xy, asp = 1, pch = 16, cex = 0.5, cex.main = 0.75,
      main = paste0(colnames(res$scores_env)[1], " environment score"),
      xlab = "x mm", ylab = "y mm",
      col = viridiscols[1 + pmin(round(9 * (res$scores_env[, 1] / quantile(res$scores_env[, 1], 0.99))), 10)])
@@ -179,12 +184,12 @@ heatmap(res$celltypeinvolvement, cexCol = .6, cexRow = .8, margins = c(8, 10))
 In the above, we can see that PCT cells contribute most strongly to the "SAT1_SERPINA1_2" module,
 while the "ITGA3_B2M_SPOCK2_3" module has a broader set of cell types contributing. 
 
-For more detail, we can see how each cell type contributes to each gene within a single module. |
+For more detail, we can see how each cell type contributes to each gene within a single module. 
 The "attributionmats" result has this information:
 
 ```{r resattributionmats, fig.width = 6, fig.height = 8}
 str(res$attributionmats)
-heatmap(res$attributionmats[[1]], cexCol = .8, cexRow = .8, margins = c(8, 14))
+head(res$attributionmats[[1]])
 ```
 
 Here we can see that many very different cell types contribute to the genes in this module.
@@ -192,23 +197,26 @@ Here we can see that many very different cell types contribute to the genes in t
 
 ### Workflow for exploring InSituCor results:
 
-Once you've run InSituCor, the we recommend exploring your results as follows:
+Once you've run InSituCor, we recommend exploring your results as follows:
 
 1. Look at module gene content to identify interesting modules. (But unless you
 know all the genes in the genome, expect that some interesting modules won't 
 attract your attention at this point.) 
 A network diagram on the conditional correlation matrix can be a nice way to visualize your results:
 
-<need to implement this plot>
+```{r netplot, fig.width = 4, fig.height = 4}
+plotCorrelationNetwork(res$condcor, modules = res$modules, show_gene_names = TRUE, 
+                       corthresh = 0.1)
+```
 
-2. Look at the \code{celltypeinvolvement} output to see which modules involve the 
+2. Look at the \code{cellTypeAttribution} output to see which modules involve the 
 cell types you're interested in.
 
 3. Look at spatial maps of module environment scores to get a general feel for module behavior. 
 
 Based on steps 1-3, you'll develop a handful of favorite modules. At this point, proceed to step 4:
 
-4. use your favorite interactive visualizer to plot individual transcripts from 
+4. Use your favorite interactive visualizer to plot individual transcripts from 
  your module across space, and explore at length. 
 
 
@@ -218,9 +226,11 @@ Advanced users wishing for more control can skip the main \code{insitucor}
 wrapper function and run the workflow step-by-step, evaluating results as they go. 
 
 This uses 4 functions: 
-- \code{defineModules}, to derive gene modules from this matrix
-- \code{scoreModules}, to score cells for module activity at the single-cell and envirnemt level
-- \code{cellTypeAttribution}, to evaluate the role of each cell type in each module
+
+- calcSpatialCor(), to compute the conditional correlation matrix
+- defineModules(), to derive gene modules from this matrix
+- scoreModules(), to score cells for module activity at the single-cell and environment level
+- cellTypeAttribution(), to evaluate the role of each cell type in each module
 
 Below is an example workflow using these modules:
 ```{r handsonworkflow}

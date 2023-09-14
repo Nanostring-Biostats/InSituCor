@@ -50,7 +50,7 @@ and tissue ID. Including cell signal strength (total counts) and background (neg
 
 \item{resolution}{Argument to igraph::cluster_leiden. Lower values produce bigger clusters.}
 
-\item{corthresh}{Only correlations about this value will go into the adjacency graph fed into leiden clustering}
+\item{corthresh}{Only correlations above this value will go into the adjacency graph fed into leiden clustering}
 
 \item{min_module_cor}{Only keep modules with average cor above this value.}
 
