@@ -25,7 +25,7 @@
 #' @param gene_weighting_rule How to define modules' gene weights, absed on gene expression levels.
 #'   One of "inverse_sqrt", "inverse", or "identity".
 #' @param resolution Argument to igraph::cluster_leiden. Lower values produce bigger clusters. 
-#' @param corthresh Only correlations about this value will go into the adjacency graph fed into leiden clustering
+#' @param corthresh Only correlations above this value will go into the adjacency graph fed into leiden clustering
 #' @param min_module_cor Only keep modules with average cor above this value.
 #' @param max_cells If there are more than this many cells, certain steps will use a random subset of this size.
 #'   Output will still be for all cells.
