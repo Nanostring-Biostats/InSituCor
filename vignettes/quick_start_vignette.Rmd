@@ -208,6 +208,7 @@ A network diagram on the conditional correlation matrix can be a nice way to vis
 plotCorrelationNetwork(res$condcor, modules = res$modules, show_gene_names = TRUE, 
                        corthresh = 0.1)
 ```
+
 2. Look at the \code{cellTypeAttribution} output to see which modules involve the 
 cell types you're interested in.
 
