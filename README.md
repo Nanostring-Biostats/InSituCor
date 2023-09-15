@@ -16,21 +16,19 @@ An R package for discovering modules of spatially correlated genes in spatial tr
 See the "vignettes" folder. Vignettes should run in <2 minutes. 
 
 ### Instructions for use
+The "insitucor" function runs the complete workflow. 
 
-
-#### workflow:
+### Architecture:
 
 <img width="447" alt="workflow" src="https://github.com/Nanostring-Biostats/SPARC/assets/4357938/a00d2985-1f01-4e6d-acac-7ef907e1ac2a">
 
  
 ### Reproduction instructions
-
+The analyses from the manuscript will be made available at https://github.com/Nanostring-Biostats/InSituCor-manuscript-analyses.
 
 ### Installation
 ```
-
+devtools::install_github("https://github.com/Nanostring-Biostats/InSituCor")
 ```
 Installation should take < 1 min on a normal desktop computer. 
 
-
-### Function dependencies:
