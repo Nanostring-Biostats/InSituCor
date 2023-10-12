@@ -7,6 +7,7 @@ License: See license file
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr
 Imports: 
     data.table,
     Matrix,
@@ -14,5 +15,6 @@ Imports:
     Rfast,
     uwot,
     igraph,
-    methods
+    methods,
+    knitr
 LazyData: true
