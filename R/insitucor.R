@@ -41,6 +41,9 @@
 #'  \item celltypeinvolvement: A matrix giving the maximum attribution score for each cell type in each module.
 #' }
 #' @export
+#' @importFrom methods as
+#' @importFrom stats cor cov lm model.matrix rnorm
+#' @importFrom utils head
 insitucor <- function(counts, conditionon = NULL, celltype,
                        neighbors = NULL, xy = NULL, k = NULL, radius = NULL, tissue = NULL, # args for neighbor definition
                        min_module_size = 3, max_module_size = 20,                           # args for module definition
