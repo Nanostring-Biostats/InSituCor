@@ -12,6 +12,7 @@
 #' @param ... Arguments passes to igraph
 #' @return A plot.igraph plot
 #' @importFrom igraph V
+#' @importFrom grDevices colors
 #' @importFrom igraph plot.igraph
 #' @importFrom uwot umap
 #' @export
