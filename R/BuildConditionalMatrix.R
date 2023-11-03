@@ -29,6 +29,8 @@ build_conditional_matrix <- function(variables) {
     }
     allmat <- cbind(allmat, newmat)
   }
-  colnames(allmat) <- gsub("variables\\[\\[i\\]\\]", "", colnames(allmat))
-  return(allmat)
+  # to ensure it's positive definite, rotate along its principal components, and remove any PCs with near-0 eigenvaluesL
+  pc <- prcomp(allmat)
+  rotatedmat <- pc$x[, pc$sdev > 1e-6 * median(pc$sdev)]
+  return(rotatedmat)
 }
