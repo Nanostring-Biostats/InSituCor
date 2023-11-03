@@ -25,6 +25,7 @@
 #' \item env: The matrix of neighborhood expression of all genes (columns) in all cells - or a subset of cells (rows)
 #' \item neighbors: a sparse adjacency matrix giving neighbor relationships
 #' }
+#' @importFrom withr with_seed
 #' @export
 calcSpatialCor <- function(counts, conditionon = NULL,
                        neighbors = NULL, xy = NULL, k = NULL, radius = NULL, tissue = NULL,
@@ -106,7 +107,7 @@ calcSpatialCor <- function(counts, conditionon = NULL,
   ## perform subsetting if needed:
   use <- TRUE
   if (nrow(counts) > max_cells) {
-    use <- sample(seq_len(nrow(counts)), max_cells, replace = FALSE)
+    withr::with_seed(seed = 0, {use <- sample(seq_len(nrow(counts)), max_cells, replace = FALSE)})
   }
 
   ## get environment matrix: -----------------------

@@ -13,6 +13,7 @@
 #' @param verbose Whether to print progress
 #' @return A list with two elements: "involvescores", a matrix of module * cell type scores, from 0-1.
 #'         "attributionmats", a list of matrices giving the involvement of each cell type in each gene in each cluster.
+#' @importFrom withr with_seed
 #' @export
 cellTypeAttribution <- function(modulescores, weights, counts, celltype, neighbors,
                                  nsub = 5000, verbose = FALSE) {
@@ -29,7 +30,7 @@ cellTypeAttribution <- function(modulescores, weights, counts, celltype, neighbo
   if (is.null(nsub)) {
     use <- TRUE
   } else {
-    use <- sample(1:nrow(counts), min(nsub, nrow(counts)))
+    withr::with_seed(seed = 1, {use <- sample(seq_len(nrow(counts)), min(nsub, nrow(counts)))})
   }
   modulescores <- modulescores[use, ]
   neighbors <- neighbors[use, ]

@@ -53,8 +53,8 @@ insitucor <- function(counts, conditionon = NULL, celltype,
                        verbose = TRUE) {
 
   ## get conditional covariance matrix
-  temp <- calcSpatialCor (counts = counts, conditionon = conditionon,
-                     neighbors = neighbors, xy = xy, k = k, radius = radius,
+  temp <- calcSpatialCor(counts = counts, conditionon = conditionon,
+                     neighbors = neighbors, xy = xy, k = k, radius = radius, tissue = tissue,
                      roundcortozero = roundcortozero, max_cells = max_cells)
   condcor <- temp$condcor
   env <- temp$env

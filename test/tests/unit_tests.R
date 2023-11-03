@@ -51,8 +51,8 @@ test_that("wrapper returns the expected results", {
   expect_true(is(res$condcor, 'sparseMatrix'))
   expect_true(is.matrix(res$celltypeinvolvement))
   expect_true(is.matrix(res$attributionmats[[1]]))
+  expect_true(abs(res$condcor[1,2] - 0.5211) < 1e-3)
 })
-
 
 #### test neighbor definition: -----------------------
 

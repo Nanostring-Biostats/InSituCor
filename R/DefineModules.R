@@ -186,6 +186,8 @@ name_module <- function(mat) {
   } else {
     name <- paste0(c(top3[1:2], n), collapse = "_")
   }
+  # replace problematic special characters
+  name <- make.names(name)
   return(name)
 }
 
