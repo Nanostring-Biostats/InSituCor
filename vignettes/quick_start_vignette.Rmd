@@ -123,9 +123,9 @@ res <- insitucor(
                # fundamental input data:
                counts = normcounts, conditionon = conditionon, celltype = celltype,
                # args for neighbor definition:
-               neighbors = NULL, xy = xy, k = NULL, radius = 0.1, tissue = annot$fov, 
+               neighbors = NULL, xy = xy, k = 100, radius = NULL, tissue = NULL,  
                # args for module definition:
-               min_module_size = 2, max_module_size = 20, min_module_cor = 0.05,
+               min_module_size = 2, max_module_size = 25, min_module_cor = 0.1,
                gene_weighting_rule = "inverse_sqrt",   
                # args for controlling memory and compute
                roundcortozero = 0.1, max_cells = 1e5,                               

@@ -33,9 +33,9 @@ if (FALSE) {
 
 
 #### test big wrapper -----------------------------------
-
+annot$redundant = 1*(annot$celltype == "PCT")
 res <- insitucor(counts = counts,
-             conditionon = annot[, c("fov", "totalcounts", "celltype")],
+             conditionon = annot[, c("fov", "totalcounts", "celltype","redundant")],
              celltype = annot$celltype,
              neighbors = NULL, xy = xy, k = NULL, radius = 0.05, tissue = annot$fov, # args for neighbor definition
              min_module_size = 2, max_module_size = 8,                 # args for module definition
@@ -51,8 +51,8 @@ test_that("wrapper returns the expected results", {
   expect_true(is(res$condcor, 'sparseMatrix'))
   expect_true(is.matrix(res$celltypeinvolvement))
   expect_true(is.matrix(res$attributionmats[[1]]))
+  expect_true(abs(res$condcor[1,2] - 0.5211) < 1e-3)
 })
-
 
 #### test neighbor definition: -----------------------
 
