@@ -1,3 +1,5 @@
+
+![image](https://github.com/Nanostring-Biostats/InSituCor/assets/4357938/d40c3388-58a8-42e7-acfd-387da63f2572)
 # InSituCor
 An R package for discovering modules of spatially correlated genes in spatial transcriptomics data.
 
