@@ -22,7 +22,7 @@
 #' @param roundcortozero Correlation values below this threshold will be stored as 0 to allow for a sparse matrix
 #' @param min_module_size Modules smaller than this are discarded
 #' @param max_module_size Modules bigger than than this are subclustered
-#' @param gene_weighting_rule How to define modules' gene weights, absed on gene expression levels.
+#' @param gene_weighting_rule How to define modules' gene weights, based on gene expression levels.
 #'   One of "inverse_sqrt", "inverse", or "identity".
 #' @param resolution Argument to igraph::cluster_leiden. Lower values produce bigger clusters. 
 #' @param corthresh Only correlations above this value will go into the adjacency graph fed into leiden clustering
@@ -72,7 +72,7 @@ insitucor <- function(counts, conditionon = NULL, celltype,
                               resolution = resolution, 
                               corthresh = corthresh,
                               min_module_cor = min_module_cor,
-                              gene_weighting_rule = "inverse_sqrt")
+                              gene_weighting_rule = gene_weighting_rule)
 
   ## score modules
   if (verbose) {
