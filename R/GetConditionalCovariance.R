@@ -5,7 +5,7 @@
 #' @return A conditional covariance (or correlation) matrix
 #' @importFrom Rfast cova
 get_conditional_correlation <- function(mat = NULL, condmat = NULL, outputtype = "cor") {
-  cov_aa <- Rfast::cova(mat)
+  cov_aa <- cova2(mat)
   cov_bb <- cov(condmat)
   cov_ab <- cov(mat, condmat)
 
@@ -15,6 +15,35 @@ get_conditional_correlation <- function(mat = NULL, condmat = NULL, outputtype =
     condcov <- cov2cor(condcov)
   }
   return(condcov)
+}
+
+#' debugged Rfast::cova:
+#' @param x matrix
+#' @param center whether to center
+#' @param large Same as Rfast::cova large argument
+#' @importFrom Rfast colmeans
+#' @importFrom Rfast Crossprod
+#' @importFrom Rfast eachrow
+#' @importFrom base crossprod
+cova2 <- function(x, center = FALSE, large = FALSE) 
+{
+  n <- dim(x)[1]
+  if (!center) {
+    m <- sqrt(n) * Rfast::colmeans(x)
+    if (large) {
+      s <- (Rfast::Crossprod(x, x) - tcrossprod(m))/(n - 1)
+    }
+    else s <- (base::crossprod(x) - tcrossprod(m))/(n - 1)
+  }
+  else {
+    m <- Rfast::colmeans(x)
+    x <- Rfast::eachrow(x, m, oper = "-")
+    if (large) {
+      s <- Rfast::Crossprod(x, x)/(n - 1)
+    }
+    else s <- base::crossprod(x)/(n - 1)
+  }
+  s
 }
 
 #' convert covariance matrix to correlation:
