@@ -75,6 +75,7 @@ technical variables like cells' signal strength ("totalcounts") and background l
 ```{r strconditionon}
 # build the conditionon data frame:
 annot <- cosmx_kidney$annot
+rownames(annot) <- rownames(norm)
 conditionon <- annot[, c("fov", "totalcounts", "negmean", "celltype")]
 rownames(conditionon) <- annot$cell_ID
 head(conditionon)

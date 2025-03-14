@@ -3,6 +3,8 @@
 #' Combine all variables to be conditioned on into a viable model matrix
 #' @param variables A list containing all the variables (could be vectors or matrices) that you wish to condition on
 #' @return A numeric matrix of continuous and indicator variables, ready to be conditioned on.
+#' @importFrom stats prcomp
+#' @importFrom stats median
 build_conditional_matrix <- function(variables) {
   # get number of obs:
   if (is.matrix(variables[[1]])) {
@@ -30,7 +32,7 @@ build_conditional_matrix <- function(variables) {
     allmat <- cbind(allmat, newmat)
   }
   # to ensure it's positive definite, rotate along its principal components, and remove any PCs with near-0 eigenvaluesL
-  pc <- prcomp(allmat)
-  rotatedmat <- pc$x[, pc$sdev > 1e-6 * median(pc$sdev)]
+  pc <- stats::prcomp(allmat)
+  rotatedmat <- pc$x[, pc$sdev > 1e-6 * stats::median(pc$sdev)]
   return(rotatedmat)
 }
