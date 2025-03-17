@@ -1,4 +1,4 @@
 library(testthat)
-library(panopticor)
+library(InSituCor)
 options(mc.cores = 1)
-test_check("panopticor")
+test_check("InSituCor")

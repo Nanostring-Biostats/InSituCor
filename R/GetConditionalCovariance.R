@@ -3,7 +3,6 @@
 #' @param condmat Matrix to be conditioned on
 #' @param outputtype Either "cor" or "cov"
 #' @return A conditional covariance (or correlation) matrix
-#' @importFrom Rfast cova
 get_conditional_correlation <- function(mat = NULL, condmat = NULL, outputtype = "cor") {
   cov_aa <- cova2(mat)
   cov_bb <- cov(condmat)
