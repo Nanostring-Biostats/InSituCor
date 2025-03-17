@@ -1,12 +1,7 @@
 library(testthat)
 library(InSituCor)
 rm(list = ls())
-#temp <- readRDS("data/mini CosMx kidney.RDS")
-#annot <- temp$annot
-#counts <- temp$counts
-#celltype <- temp$celltype
-#xy <- temp$xy
-#rm(temp)
+
 data(cosmx_kidney)
 annot <- cosmx_kidney$annot
 rownames(annot) <- annot$cell_ID

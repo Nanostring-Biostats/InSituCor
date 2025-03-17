@@ -1,12 +1,12 @@
 Package: InSituCor
 Title: Discover modules of spatially co-regulated genes
 Version: 0.0.0.9000
-Authors@R: person("Danaher", "Patrick", email = "pdanaher@nanostring.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2844-5883"))
+Authors@R: person("Danaher", "Patrick", email = "patrick.danaher@bruker.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2844-5883"))
 Description: Designed for single-cell spatial transcriptomics data, such as is created by the CosMx platform. Finds modules of spatially correlated genes - i.e. genes that tend to be expressed in the same regions as each other. Importantly, insitucor first conditions on factors like cell type, isolating correlations that can't be explained by trivial factors.
-License: See license file
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 VignetteBuilder: knitr
 Imports: 
     data.table,
@@ -16,5 +16,6 @@ Imports:
     uwot,
     igraph,
     methods,
-    knitr
+    knitr,
+    withr
 LazyData: true

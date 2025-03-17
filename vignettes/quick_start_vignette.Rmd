@@ -75,6 +75,7 @@ technical variables like cells' signal strength ("totalcounts") and background l
 ```{r strconditionon}
 # build the conditionon data frame:
 annot <- cosmx_kidney$annot
+rownames(annot) <- rownames(norm)
 conditionon <- annot[, c("fov", "totalcounts", "negmean", "celltype")]
 rownames(conditionon) <- annot$cell_ID
 head(conditionon)
@@ -148,7 +149,7 @@ head(res$modules)
 
 (In this very small dataset, relatively few genes have made their way into modules.)
 Modules are named using their 2-3 most influential genes, and the number of genes.
-E.g. the module "ITGA3_B2M_SPOCK2_3" is most impacted by ITGA3 and B2M, and it has 3 total genes.
+E.g. a module named "ITGA3_B2M_SPOCK2_3" would be most impacted by ITGA3 and B2M, and would have 3 total genes.
 
 Third are the per-cell module scores. Two kinds of scores are calculated: 
 "single cell" scores, measuring module activity within a cell, and "environment" 
@@ -182,7 +183,7 @@ heatmap(res$celltypeinvolvement, cexCol = .6, cexRow = .8, margins = c(8, 10))
 ```
 
 In the above, we can see that PCT cells contribute most strongly to the "SAT1_SERPINA1_2" module,
-while the "ITGA3_B2M_SPOCK2_3" module has a broader set of cell types contributing. 
+while the "ITGA3_IL18_2" module has a broader set of cell types contributing. 
 
 For more detail, we can see how each cell type contributes to each gene within a single module. 
 The "attributionmats" result has this information:
