@@ -183,7 +183,7 @@ heatmap(res$celltypeinvolvement, cexCol = .6, cexRow = .8, margins = c(8, 10))
 ```
 
 In the above, we can see that PCT cells contribute most strongly to the "SAT1_SERPINA1_2" module,
-while the "ITGA3_B2M_SPOCK2_3" module has a broader set of cell types contributing. 
+while the "ITGA3_IL18_2" module has a broader set of cell types contributing. 
 
 For more detail, we can see how each cell type contributes to each gene within a single module. 
 The "attributionmats" result has this information:
