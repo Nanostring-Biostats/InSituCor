@@ -54,7 +54,7 @@ and tissue ID. Including cell signal strength (total counts) and background (neg
 
 \item{min_module_cor}{Only keep modules with average cor above this value.}
 
-\item{gene_weighting_rule}{How to define modules' gene weights, absed on gene expression levels.
+\item{gene_weighting_rule}{How to define modules' gene weights, based on gene expression levels.
 One of "inverse_sqrt", "inverse", or "identity".}
 
 \item{roundcortozero}{Correlation values below this threshold will be stored as 0 to allow for a sparse matrix}

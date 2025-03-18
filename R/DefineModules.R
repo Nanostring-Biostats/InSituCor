@@ -4,7 +4,7 @@
 #' @param env Environment matrix, possibly for a large subset of cells
 #' @param min_module_size Modules smaller than this are discarded
 #' @param max_module_size Modules bigger than than this are subclustered
-#' @param gene_weighting_rule How to define modules' gene weights, absed on gene expression levels.
+#' @param gene_weighting_rule How to define modules' gene weights, based on gene expression levels.
 #'   One of "inverse_sqrt", "inverse", or "identity".
 #' @param resolution Resolution parameter for leiden clustering
 #' @param corthresh Correlations with absolute value below this will be rounded to zero to save memory

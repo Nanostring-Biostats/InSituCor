@@ -24,9 +24,9 @@ nearestNeighborGraph <- function(x, y, N, subset=1) {
   nearestNeighbor <- function(i) {
     subset_dt <- DT[subset == i]
     idx <- which(DT[["subset"]] == i)
-    ndist <- spatstat.geom::nndist(subset_dt[, .(x, y)],
+    ndist <- spatstat.geom::nndist(subset_dt[, list(x, y)],
                                    k=1:N)
-    nwhich <- spatstat.geom::nnwhich(subset_dt[, .(x, y)],
+    nwhich <- spatstat.geom::nnwhich(subset_dt[, list(x, y)],
                                      k=1:N)
     ij <- data.table::data.table(i = idx[1:nrow(subset_dt)],
                                  j = idx[as.vector(nwhich)],

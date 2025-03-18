@@ -23,7 +23,6 @@ get_conditional_correlation <- function(mat = NULL, condmat = NULL, outputtype =
 #' @importFrom Rfast colmeans
 #' @importFrom Rfast Crossprod
 #' @importFrom Rfast eachrow
-#' @importFrom base crossprod
 cova2 <- function(x, center = FALSE, large = FALSE) 
 {
   n <- dim(x)[1]

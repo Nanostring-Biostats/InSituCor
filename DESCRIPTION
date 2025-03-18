@@ -16,6 +16,9 @@ Imports:
     uwot,
     igraph,
     methods,
-    knitr,
     withr
 LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat

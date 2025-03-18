@@ -30,7 +30,7 @@ defineModules(
 
 \item{min_module_cor}{Modules must have mean correlation of at least this much to be reported}
 
-\item{gene_weighting_rule}{How to define modules' gene weights, absed on gene expression levels.
+\item{gene_weighting_rule}{How to define modules' gene weights, based on gene expression levels.
 One of "inverse_sqrt", "inverse", or "identity".}
 }
 \value{
